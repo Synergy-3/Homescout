@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homescout - Your Perfect Rental Home Finder</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        h1 {
+            margin: 0;
+            font-size: 36px;
+        }
+        h2 {
+            font-size: 24px;
+            margin: 10px 0;
+            font-style: italic;
+        }
+        .intro {
+            padding: 20px;
+            background-color: #ffffff;
+            text-align: center;
+            margin: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .features, .policy, .overall-reviews {
+            padding: 20px;
+            background-color: #ffffff;
+            margin: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .search-area {
+            margin: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        select {
+            padding: 10px;
+            font-size: 16px;
+            margin-right: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        button {
+            padding: 10px 15px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .property {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin: 10px;
+            padding: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .property img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+        .results {
+            display: none;
+            margin: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .comment {
+            background: #f9f9f9;
+            padding: 5px;
+            margin: 5px;
+            border-left: 4px solid #4CAF50;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #4CAF50;
+            color: white;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+        .review-section, .overall-review-section {
+            margin: 20px;
+            padding: 20px;
+            background: #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .review-section textarea, .overall-review-section textarea {
+            width: 100%;
+            height: 100px;
+            margin-top: 10px;
+        }
+        .review-section button, .overall-review-section button {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Homescout</h1>
+    <h2>Your Perfect Rental Home Finder</h2>
+</header>
+
+<div class="intro">
+    <p>Welcome to Homescout, the ultimate solution for all your rental needs! Our platform connects renters with a wide variety of rental properties across multiple areas, offering detailed information and user-friendly features.</p>
+    <p>Whether you're looking for a cozy apartment downtown, a spacious house in the suburbs, or a luxurious beachfront property, we have options for everyone. Our goal is to simplify your search process by providing you with all the necessary tools and information at your fingertips.</p>
+    <p>Explore the properties, check their ratings, and read user comments to make an informed decision. Your perfect rental home is just a few clicks away!</p>
+</div>
+
+<div class="features">
+    <h2>Features</h2>
+    <p>✔ User-friendly interface<br>✔ Diverse property listings<br>✔ Detailed property information<br>✔ Contact information for owners<br>✔ User reviews and ratings</p>
+</div>
+
+<div class="policy">
+    <h2>Why Choose Homescout?</h2>
+    <p>At Homescout, we prioritize your rental experience. We offer a variety of listings tailored to your needs, along with easy navigation and direct communication with property owners. Our platform is designed to help you find the perfect rental home effortlessly.</p>
+</div>
+
+<div class="overall-reviews">
+    <h2>Overall Reviews</h2>
+    <p>"Homescout helped me find my dream apartment! The user interface is fantastic." - Alex<br>"Great selection of properties and easy to navigate." - Maria<br>"Highly recommend for anyone searching for rentals!" - John</p>
+</div>
+
+<div class="search-area">
+    <select id="areaSelect" onchange="displayProperties()">
+        <option value="">Select an area...</option>
+        <option value="Downtown">Downtown</option>
+        <option value="Suburbs">Suburbs</option>
+        <option value="Uptown">Uptown</option>
+        <option value="Oceanview">Oceanview</option>
+        <option value="Riverdale">Riverdale</option>
+    </select>
+    <button onclick="displayProperties()">Search</button>
+</div>
+
+<div class="results" id="resultsList">
+    <h3>Available Properties:</h3>
+    <div id="propertyDetails"></div>
+    <div id="comments"></div>
+</div>
+
+<div class="review-section">
+    <h2>User Reviews for Properties</h2>
+    <p>Write your review here:</p>
+    <textarea id="userReview" placeholder="Enter your review..."></textarea>
+    <button onclick="submitReview()">Submit Review</button>
+</div>
+
+<div class="overall-review-section">
+    <h2>Overall Website Review</h2>
+    <p>Share your thoughts about our website:</p>
+    <textarea id="overallReview" placeholder="Enter your review about the website..."></textarea>
+    <button onclick="submitOverallReview()">Submit Overall Review</button>
+</div>
+
+<footer>
+    <p>&copy; 2024 Homescout. All rights reserved.</p>
+</footer>
+
+<script>
+    const properties = {
+        "Downtown": [
+            { name: "City View Apartment", price: "$1200/month", owner: "Jane Smith", contact: "987-654-3210", image: "https://images.stockcake.com/public/8/8/1/8814dc5c-08e3-48f6-be0a-287e67513bf8_large/city-view-apartment-stockcake.jpg", comments: ["Great location!", "Loved the amenities!"] }
+        ],
+        "Suburbs": [
+            { name: "Cozy Family House", price: "$1100/month", owner: "Alice Johnson", contact: "555-555-5555", image: "https://www.pufikhomes.com/wp-content/uploads/2018/05/family-home-in-colorado-pufikhomes-1.jpg", comments: ["Ideal for families.", "Spacious backyard."] }
+        ],
+        "Uptown": [
+            { name: "Eco-Friendly Apartment", price: "$950/month", owner: "Kevin Brown", contact: "999-888-7777", image: "https://images.squarespace-cdn.com/content/v1/5748ef421d07c0e0855afd96/95f8d432-4a21-4b9d-b92d-53f330bf662b/Screenshot+2024-04-30+at+5.40.50%E2%80%AFAM.png=Eco-Friendly+Apartment", comments: ["Green living!", "Wonderful community atmosphere."] }
+        ],
+        "Oceanview": [
+            { name: "Beachfront Property", price: "$1800/month", owner: "Emma Wilson", contact: "888-777-6666", image: "https://smithbrothersconstruction.com/wp-content/uploads/2014/04/3KapaluaPl-566-Edit.jpg", comments: ["Stunning views!", "Great for vacations."] }
+        ],
+        "Riverdale": [
+            { name: "Riverfront Cabin", price: "$1400/month", owner: "Sam Green", contact: "555-444-3333", image: "https://www.eloghomes.com/wp-content/uploads/2021/11/lg_riverfront_lg-600x337.jpg", comments: ["Perfect for nature lovers.", "Calm and serene area."] }
+        ]
+    };
+
+    const overallReviews = [];
+
+   function displayProperties() {
+        const area = document.getElementById("areaSelect").value;
+        const resultsDiv = document.getElementById("resultsList");
+        const propertyDetailsDiv = document.getElementById("propertyDetails");
+        const commentsDiv = document.getElementById("comments");
+
+        propertyDetailsDiv.innerHTML = "";
+        commentsDiv.innerHTML = "";
+
+        if (area) {
+            const selectedProperties = properties[area];
+            selectedProperties.forEach(property => {
+                const propertyDiv = document.createElement("div");
+                propertyDiv.className = "property";
+                propertyDiv.innerHTML = `
+                    <img src="${property.image}" alt="${property.name}">
+                    <h4>${property.name}</h4>
+                    <p>Price: ${property.price}</p>
+                    <p>Owner: ${property.owner}</p>
+                    <p>Contact: ${property.contact}</p>
+                    <button onclick="bookProperty('${property.name}')">Book Now</button>
+                    <h5>User Comments:</h5>
+                    <div class="comment">${property.comments.length > 0 ? property.comments.join('</div><div class="comment">') : 'No reviews yet.'}</div>
+                `;
+                 propertyDetailsDiv.appendChild(propertyDiv);
+            });
+            resultsDiv.style.display = "block";
+        }
+    }
+
+    function bookProperty(propertyName) {
+        alert(`You have selected to book the property: ${propertyName}. Please contact the owner for more details.`);
+    }
+
+    function submitReview() {
+        const reviewText = document.getElementById("userReview").value;
+        if (reviewText.trim()) {
+            const commentsDiv = document.createElement("div");
+            commentsDiv.className = "comment";
+            commentsDiv.textContent = reviewText;
+            document.getElementById("comments").appendChild(commentsDiv);
+            document.getElementById("userReview").value = ""; // Clear the textarea
+        } else {
+            alert("Please enter a review before submitting.");
+        }
+    }
+
+    function submitOverallReview() {
+        const overallReviewText = document.getElementById("overallReview").value;
+        if (overallReviewText.trim()) {
+            overallReviews.push(overallReviewText);
+            const overallReviewDiv = document.createElement("div");
+            overallReviewDiv.className = "comment";
+            overallReviewDiv.textContent = overallReviewText;
+            document.querySelector(".overall-review-section").appendChild(overallReviewDiv);
+            document.getElementById("overallReview").value = ""; // Clear the textarea
+        } else {
+            alert("Please enter a review about the website before submitting.");
+        }
+    }
+</script>
+
+</body>
+</html>
+
